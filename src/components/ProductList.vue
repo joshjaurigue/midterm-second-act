@@ -1,26 +1,41 @@
+
 <template>
-    <div class="product-list">
-      <Product v-for="product in products" :key="product.id" :product="product" />
-    </div>
-  </template>
-  
-  <script>
-  import Product from './ProductEntry.vue';
-  
-  export default {
-    components: {
-      Product
-    },
-    data() {
-      return {
-        products: [
-          { id: 1, name: 'Product 1', description: 'Description of Product 1', price: 10 },
-          { id: 2, name: 'Product 2', description: 'Description of Product 2', price: 20 },
-          { id: 3, name: 'Product 3', description: 'Description of Product 3', price: 10 },
-          { id: 4, name: 'Product 4', description: 'Description of Product 4', price: 20 },
-          { id: 5, name: 'Product 5', description: 'Description of Product 5', price: 10 },
-        ]
-      }
+  <div>
+    <h1>Product List</h1>
+    <router-link to="/add">Add Product</router-link>
+    <ul>
+      <li v-for="(product, index) in products" :key="product.id">
+        <div>
+          <h3>Name: {{ product.name }}</h3>
+          <p>Description: {{ product.description }}</p>
+          <p>Price: {{ product.price }}</p>
+          <button @click="editProduct(index)">Edit</button>
+          <button @click="deleteProduct(index)">Delete</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+
+export default {
+  data() {
+    return {
+      products: []
+    };
+  },
+  created() {
+    this.products = this.$store.state.products;
+  },
+  methods: {
+      editProduct(index) {
+          this.$router.push(`/edit/${index}`);
+      },
+    deleteProduct(index) {
+      this.$store.dispatch('deleteProduct', index);
     }
   }
-  </script>
+};
+</script>
+
