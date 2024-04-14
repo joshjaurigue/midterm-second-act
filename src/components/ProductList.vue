@@ -6,9 +6,9 @@
     <ul>
       <li v-for="(product, index) in products" :key="product.id">
         <div>
-          <h3>Name: {{ product.name }}</h3>
-          <p>Description: {{ product.description }}</p>
-          <p>Price: {{ product.price }}</p>
+          <h3>Product Name: {{ product.name }}</h3>
+          <p>Product Description: {{ product.description }}</p>
+          <p>Product Price: {{ product.price }}</p>
           <button @click="editProduct(index)">Edit</button>
           <button @click="deleteProduct(index)">Delete</button>
         </div>
