@@ -1,5 +1,17 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+    <!-- Importing and using AddProduct component correctly -->
+    <ProductList/>
   </div>
 </template>
+
+<script>
+import ProductList from '@/components/ProductList.vue';
+
+export default {
+  name: 'ProductListView',
+  components: {
+   ProductList
+  }
+}
+</script>

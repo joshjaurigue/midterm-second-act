@@ -1,21 +1,26 @@
 <template>
     <div>
         <h2>Add Product</h2>
-    <form @submit.prevent="addProduct">
-      <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" v-model="newProduct.name" required>
-      </div>
-      <div>
-        <label for="description">Description:</label>
-        <textarea id="description" v-model="newProduct.description" required></textarea>
-      </div>
-      <div>
-        <label for="price">Price:</label>
-        <input type="number" id="price" v-model.number="newProduct.price" required>
-      </div>
-      <button type="submit">Add Product</button>
-    </form>
+        <form ref="form" @submit.prevent="addProduct">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" v-model="newProduct.name" required>
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" v-model="newProduct.description" required></textarea>
+        </div>
+        <div>
+            <label for="price">Price:</label>
+            <input type="number" id="price" v-model.number="newProduct.price" required>
+        </div>
+        <button type="submit">Add Product</button>
+        </form>
+
+         <!-- Animated success message -->
+        <transition name="success-message" appear>
+        <h3 v-if="showSuccess">The product was added successfully!</h3>
+        </transition>
     </div>
 </template>
 
@@ -27,7 +32,8 @@
         name: '',
         description: '',
         price: null
-      }
+      },
+      showSuccess: false
     };
   },
   methods: {
@@ -38,23 +44,42 @@
         return;
       }
 
+      // Generate the next ID
+      const nextId = this.$store.state.products.length > 0 ? this.$store.state.products[this.$store.state.products.length - 1].id + 1 : 101;
+
+        // Save the new product with the generated ID
+        this.newProduct.id = nextId;
       // Save the new product
       this.$store.commit('addProduct', this.newProduct);
 
+       // Show success message
+       this.showSuccess = true;
+
+    
+        // Hide success message after a delay
+        setTimeout(() => {
+        this.showSuccess = false;
+        }, 3000); // Adjust the delay as needed
+        
+        
       // Clear the form fields
       this.newProduct = {
         name: '',
         description: '',
         price: null
       };
-
-      // Apply animation (you can use Vue.js transition here)
-      this.$refs.form.classList.add('animate-add-product');
     }
-  }        
+  },
+     
     };
 </script>
 
 <style scoped>
-
+/* Define the transition styles */
+.success-message-enter-active, .success-message-leave-active {
+  transition: opacity 0.5s;
+}
+.success-message-enter, .success-message-leave-to {
+  opacity: 0;
+}
 </style>

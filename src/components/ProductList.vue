@@ -1,8 +1,9 @@
 
 <template>
   <div>
+    
     <h1>Product List</h1>
-    <router-link to="/add">Add Product</router-link>
+
     <ul>
       <li v-for="(product, index) in products" :key="product.id">
         <div>
@@ -20,19 +21,16 @@
 <script>
 
 export default {
-  data() {
-    return {
-      products: []
-    };
-  },
-  created() {
-    this.products = this.$store.state.products;
+  computed: {
+    products() {
+      return this.$store.state.products;
+    }
   },
   methods: {
       editProduct(index) {
           this.$router.push(`/edit/${index}`);
       },
-    deleteProduct(index) {
+      deleteProduct(index) {
       this.$store.dispatch('deleteProduct', index);
     }
   }
