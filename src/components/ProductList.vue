@@ -7,22 +7,31 @@
       No Product is Listed
     </div>
     
-    <ul v-else>
-      <li v-for="(product, index) in products" :key="product.id">
-        <div>
-          <h3>Product Name: {{ product.name }}</h3>
-          <p>Product Description: {{ product.description }}</p>
-          <p>Product Price: {{ product.price }}</p>
-          <button @click="editProduct(index)">Edit</button>
-          <button @click="deleteProduct(index)">Delete</button>
-        </div>
-      </li>
-    </ul>
+    <table v-else>
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(product, index) in products" :key="product.id">
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.price }}</td>
+          <td>
+            <button @click="editProduct(index)">Edit</button>
+            <button @click="deleteProduct(index)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
