@@ -36,6 +36,14 @@
         </tr>
       </tbody>
     </table>
+          <!-- Confirmation for delete -->
+          <div v-if="showConfirmation" class="modal">
+      <div class="modal-content">
+        <p>Are you sure you want to delete this product?</p>
+        <button @click="cancelDelete">Cancel</button>
+        <button @click="deleteConfirmed">Delete</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -44,7 +52,9 @@ export default {
   data() {
     return {
       // Initialize products data
-      products: []
+      products: [],
+      productToDeleteIndex: null,
+      showConfirmation: false
     };
   },
   created() {
@@ -58,8 +68,41 @@ export default {
     },
     // Delete product from the store
     deleteProduct(index) {
-      this.$store.dispatch('deleteProduct', index);
+      this.productToDeleteIndex = index;
+      this.showConfirmation = true;
+    },
+    cancelDelete() {
+      this.showConfirmation = false;
+    },
+    deleteConfirmed() {
+      this.$store.commit('deleteProduct', this.productToDeleteIndex);
+      this.showConfirmation = false;
     }
   }
 };
 </script>
+
+<style>
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.modal button {
+  margin: 5px;
+}
+</style>
+

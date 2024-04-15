@@ -10,8 +10,10 @@ export default createStore({
     addProduct(state, newProduct) {
       state.products.push(newProduct);
       console.log(state.products);
+    },
+    deleteProduct(state, index) {
+      state.products.splice(index, 1);
     }
-
   },
   actions: {
   },
