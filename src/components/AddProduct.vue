@@ -4,15 +4,15 @@
         <form ref="form" @submit.prevent="addProduct">
         <div>
             <label for="name">Name:</label>
-            <input type="text" id="name" v-model="newProduct.name" required>
+            <input type="text" id="name" v-model="newProduct.name" placeholder="Enter product name" required>
         </div>
         <div>
             <label for="description">Description:</label>
-            <textarea id="description" v-model="newProduct.description" required></textarea>
+            <textarea id="description" v-model="newProduct.description" placeholder="Enter product description" required></textarea>
         </div>
         <div>
             <label for="price">Price:</label>
-            <input type="number" id="price" v-model.number="newProduct.price" required>
+            <input type="number" id="price" v-model.number="newProduct.price" placeholder="Enter product price" required>
         </div>
         <button type="submit">Add Product</button>
         </form>
