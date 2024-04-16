@@ -69,7 +69,7 @@ export default {
   methods: {
     // Navigate to Edit Product page
     editProduct(index) {
-      this.$router.push(`/edit/${index}`);
+      this.$router.push(`/edit-product/${index}`);
     },
     // Delete product from the store
     deleteProduct(index) {
