@@ -13,6 +13,13 @@ export default createStore({
     },
     deleteProduct(state, index) {
       state.products.splice(index, 1);
+    },
+    editProduct(state, newDetails) {
+      const index = state.products.findIndex(product => product.id === newDetails.id);
+
+      if (index !== -1) {
+        state.products[index] = { ...state.products[index], ...newDetails };
+      }
     }
   },
   actions: {
