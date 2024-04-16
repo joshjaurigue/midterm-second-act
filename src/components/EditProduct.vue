@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Edit Product</h2>
-    
+
     <!--form for editing product details-->
     <form ref="form" @submit.prevent="submitForm">
       <div class="form-group">
@@ -22,7 +22,11 @@
 
     <!-- shows success message -->
     <transition name="success-message" appear>
-      <h3 v-if="showSuccess" class="text-green">The product was edited successfully!</h3>
+      <h3 v-if="showSuccess" class="text-success mt-5">The product was edited successfully!</h3>
+    </transition>
+
+    <transition name="error-message" appear>
+      <h3 v-if="showError" class="text-danger mt-5">Product name already exists. Cannot edit!</h3>
     </transition>
   </div>
 </template>
@@ -39,7 +43,8 @@ export default {
         price: null
       },
       // determines the displaying ofsuccess message
-      showSuccess: false
+      showSuccess: false,
+      showError: false
     };
   },
   mounted() {
@@ -56,8 +61,26 @@ export default {
   methods: {
     // submits the edited details
     submitForm() {
+      const isDuplicateName = this.$store.state.products.some((product, i) => i !== this.$route.params.index && product.name === this.product.name);
+
+      this.showError = isDuplicateName;
+
+      setTimeout(() => {
+        this.showError = false;
+      }, 3000);
+
+      if (isDuplicateName) return;
+
       // editProduct mutation is called
       this.$store.commit('editProduct', this.product);
+
+      this.product = {
+        id: null,
+        name: '',
+        description: '',
+        price: null
+      };
+
       this.showSuccess = true;
 
       // transition for the success message
@@ -68,7 +91,7 @@ export default {
       // redirection to product list 
       setTimeout(() => {
         this.$router.push('/');
-      }, 6000);
+      }, 4000);
     }
   },
 };
@@ -116,12 +139,16 @@ button:hover {
 
 /* Define the transition styles */
 .success-message-enter-active,
-.success-message-leave-active {
+.success-message-leave-active,
+.error-message-enter-active,
+.error-message-leave-active {
   transition: opacity 0.5s;
 }
 
 .success-message-enter,
-.success-message-leave-to {
+.success-message-leave-to,
+.error-message-enter,
+.error-message-leave-to {
   opacity: 0;
 }
 </style>
