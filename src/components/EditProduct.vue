@@ -51,8 +51,11 @@ export default {
 
       setTimeout(() => {
         this.showSuccess = false;
-        this.$router.push('/');
       }, 3000);
+
+      setTimeout(() => {
+        this.$router.push('/');
+      }, 6000);
     }
   },
 };
