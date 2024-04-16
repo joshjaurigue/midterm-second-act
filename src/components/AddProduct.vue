@@ -2,15 +2,15 @@
     <div>
         <h2>Add Product</h2>
         <form ref="form" @submit.prevent="addProduct">
-        <div>
+        <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" id="name" v-model="newProduct.name" placeholder="Enter product name" required>
         </div>
-        <div>
+        <div class="form-group">
             <label for="description">Description:</label>
             <textarea id="description" v-model="newProduct.description" placeholder="Enter product description" required></textarea>
         </div>
-        <div>
+        <div class="form-group">
             <label for="price">Price:</label>
             <input type="number" id="price" v-model.number="newProduct.price" placeholder="Enter product price" required>
         </div>
@@ -75,6 +75,44 @@
 </script>
 
 <style scoped>
+.add-product-form {
+  max-width: 400px;
+  margin: auto;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"],
+textarea,
+input[type="number"] {
+  width: calc(50% - 20px);
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
 /* Define the transition styles */
 .success-message-enter-active, .success-message-leave-active {
   transition: opacity 0.5s;
