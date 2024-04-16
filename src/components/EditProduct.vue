@@ -20,7 +20,7 @@
 
     <!-- Animated success message -->
     <transition name="success-message" appear>
-      <h3 v-if="showSuccess">The product was added successfully!</h3>
+      <h3 v-if="showSuccess">The product was edited successfully!</h3>
     </transition>
   </div>
 </template>
