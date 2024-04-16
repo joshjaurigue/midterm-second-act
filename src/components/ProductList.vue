@@ -1,15 +1,10 @@
 <template>
   <div>
     <!-- Heading for the Product List -->
-    <h1>Product List</h1>
+    <h1 class="product-heading">Product List</h1>
    
-    <!-- Display message when no products are listed -->
-    <div v-if="products.length === 0">
-      No Product is Listed
-    </div>
-    
     <!-- Centered container for the table -->
-    <div v-else class="table-container">
+    <div class="table-container">
       <!-- Table to display the list of products -->
       <table class="product-table">
         <thead>
@@ -22,21 +17,30 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Loop through products and display each product -->
-          <tr v-for="(product, index) in products" :key="product.id">
-            <td>{{ product.name }}</td>
-            <td>{{ product.description }}</td>
-            <td>{{ product.price }}</td>
-            <td>
-              <!-- Edit and Delete buttons for each product -->
-              <button @click="editProduct(index)" class="btn-edit">Edit</button>
-              <button @click="deleteProduct(index)" class="btn-delete">Delete</button>
-            </td>
-          </tr>
+          <transition-group name="fade">
+            <!-- Loop through products and display each product -->
+            <tr v-for="(product, index) in products" :key="product.id">
+              <td>{{ product.name }}</td>
+              <td>{{ product.description }}</td>
+              <td>{{ product.price }}</td>
+              <td>
+                <!-- Edit and Delete buttons for each product -->
+                <button @click="editProduct(index)" class="btn-edit">Edit</button>
+                <button @click="deleteProduct(index)" class="btn-delete">Delete</button>
+              </td>
+            </tr>
+          </transition-group>
         </tbody>
       </table>
     </div>
-    
+
+    <!-- Display message when no products are listed -->
+    <transition name="fade" appear>
+      <div v-if="products.length === 0" class="no-products">
+        No products existing yet!
+      </div>
+    </transition>
+
     <!-- Confirmation for delete -->
     <div v-if="showConfirmation" class="modal">
       <div class="modal-content">
@@ -89,7 +93,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60vh; /* Adjust the height as needed */
+}
+
+/* Heading styles */
+.product-heading {
+  margin-bottom: 0;
+  padding-bottom: 30px;
 }
 
 /* Table styles */
@@ -153,5 +162,22 @@ export default {
   background-color: white;
   padding: 20px;
   border-radius: 5px;
+}
+
+/* Transition styles */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+/* Style for "No products existing yet" message */
+.no-products {
+  margin-top: 40px; /* Adjust this value to add spacing */
+  text-align: center;
+  font-style: italic;
+  color: #999;
 }
 </style>
