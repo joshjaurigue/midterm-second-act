@@ -1,15 +1,13 @@
 <template>
   <div>
-    <!-- Heading for the Product List -->
+    <!-- heading for the product list -->
     <h1 class="product-heading">Product List</h1>
    
-    <!-- Centered container for the table -->
     <div class="table-container">
-      <!-- Table to display the list of products -->
+      <!-- table for displaying products -->
       <table class="product-table">
         <thead>
           <tr>
-            <!-- Table headers -->
             <th>Product Name</th>
             <th>Description</th>
             <th>Price</th>
@@ -17,14 +15,15 @@
           </tr>
         </thead>
         <tbody>
+          
           <transition-group name="fade">
-            <!-- Loop through products and display each product -->
+            <!-- loop for displaying all products -->
             <tr v-for="(product, index) in products" :key="product.id">
               <td>{{ product.name }}</td>
               <td>{{ product.description }}</td>
-              <td>{{ product.price }}</td>
+              <td>Php {{ product.price.toFixed(2) }}</td>
               <td>
-                <!-- Edit and Delete buttons for each product -->
+                <!-- edit and delete buttons per row -->
                 <button @click="editProduct(index)" class="btn-edit">Edit</button>
                 <button @click="deleteProduct(index)" class="btn-delete">Delete</button>
               </td>
@@ -34,14 +33,14 @@
       </table>
     </div>
 
-    <!-- Display message when no products are listed -->
+    <!-- display message when no products are listed -->
     <transition name="fade" appear>
       <div v-if="products.length === 0" class="no-products">
         No products existing yet!
       </div>
     </transition>
 
-    <!-- Confirmation for delete -->
+    <!-- shows confirmation message when deleting a product -->
     <div v-if="showConfirmation" class="modal">
       <div class="modal-content">
         <p>Are you sure you want to delete this product?</p>
@@ -56,30 +55,35 @@
 export default {
   data() {
     return {
-      // Initialize products data
+      // initializing products data as an array
       products: [],
       productToDeleteIndex: null,
       showConfirmation: false
     };
   },
   created() {
-    // Fetch products from Vuex store when the component is created
+    // fetching products from Vuex store when the component is created
     this.products = this.$store.state.products;
   },
   methods: {
-    // Navigate to Edit Product page
+    
+    // for navigating to the edit page of the selected product
     editProduct(index) {
       this.$router.push(`/edit-product/${index}`);
     },
-    // Delete product from the store
+    // for deleting a selected product
     deleteProduct(index) {
       this.productToDeleteIndex = index;
       this.showConfirmation = true;
     },
+    // for canceling the confirmation message for deleting
     cancelDelete() {
       this.showConfirmation = false;
     },
+
+    // for confirming the deletion
     deleteConfirmed() {
+      // deleteProduct mutation is called from store
       this.$store.commit('deleteProduct', this.productToDeleteIndex);
       this.showConfirmation = false;
     }

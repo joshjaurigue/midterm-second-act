@@ -1,4 +1,5 @@
 <template>
+  <!-- navigation bar/links -->
   <nav>
     <router-link to="/">Product List</router-link> |
     <router-link to="/add-products">Add Product</router-link>

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- form for adding a product-->
         <h2>Add Product</h2>
         <form ref="form" @submit.prevent="addProduct">
         <div class="form-group">
@@ -17,9 +18,9 @@
         <button type="submit">Add Product</button>
         </form>
 
-         <!-- Animated success message -->
+        <!-- success message after adding -->
         <transition name="success-message" appear>
-        <h3 v-if="showSuccess">The product was added successfully!</h3>
+          <h3 v-if="showSuccess" class="text-success">The product was added successfully!</h3>
         </transition>
     </div>
 </template>
@@ -28,6 +29,7 @@
     export default {
         data() {
     return {
+      // array for collecting input from textfields
       newProduct: {
         name: '',
         description: '',
@@ -37,32 +39,33 @@
     };
   },
   methods: {
+    // for adding the product
     addProduct() {
-      // Validate the form
+      
+      // checks if fields are empty
       if (!this.newProduct.name || !this.newProduct.description || !this.newProduct.price) {
         alert('Please fill in all fields.');
         return;
       }
 
-      // Generate the next ID
+      // generates the next id for the next addition of product starting with 101
       const nextId = this.$store.state.products.length > 0 ? this.$store.state.products[this.$store.state.products.length - 1].id + 1 : 101;
 
-        // Save the new product with the generated ID
-        this.newProduct.id = nextId;
-      // Save the new product
+      // assigns the product id with the generated id
+      this.newProduct.id = nextId;
+
+      // calls the addProduct mutation from tore
       this.$store.commit('addProduct', this.newProduct);
 
-       // Show success message
-       this.showSuccess = true;
-
-    
-        // Hide success message after a delay
-        setTimeout(() => {
+      // shows success message
+      this.showSuccess = true;
+  
+      // hides success message after a delay
+      setTimeout(() => {
         this.showSuccess = false;
-        }, 3000); // Adjust the delay as needed
+      }, 3000); 
         
-        
-      // Clear the form fields
+      // clears the form fields
       this.newProduct = {
         name: '',
         description: '',

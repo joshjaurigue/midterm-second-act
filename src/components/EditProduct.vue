@@ -1,6 +1,8 @@
 <template>
   <div>
     <h2>Edit Product</h2>
+    
+    <!--form for editing product details-->
     <form ref="form" @submit.prevent="submitForm">
       <div class="form-group">
         <label for="name">Name:</label>
@@ -18,9 +20,9 @@
       <button type="submit">Edit Product</button>
     </form>
 
-    <!-- Animated success message -->
+    <!-- shows success message -->
     <transition name="success-message" appear>
-      <h3 v-if="showSuccess">The product was edited successfully!</h3>
+      <h3 v-if="showSuccess" class="text-green">The product was edited successfully!</h3>
     </transition>
   </div>
 </template>
@@ -29,30 +31,41 @@
 export default {
   data() {
     return {
+      // array for getting the details of selected product
       product: {
         id: null,
         name: '',
         description: '',
         price: null
       },
+      // determines the displaying ofsuccess message
       showSuccess: false
     };
   },
   mounted() {
+    // gets the index of the selected product for routing
     const productIndex = parseInt(this.$route.params.index);
+
+    // checks if index exists
     if (productIndex >= 0 && productIndex < this.$store.state.products.length) {
-      this.product = this.$store.state.products[productIndex];
+      // assigns the product details temporarily
+      this.originalProduct = Object.assign({}, this.$store.state.products[productIndex]);
+      this.product = Object.assign({}, this.$store.state.products[productIndex])
     }
   },
   methods: {
+    // submits the edited details
     submitForm() {
+      // editProduct mutation is called
       this.$store.commit('editProduct', this.product);
       this.showSuccess = true;
 
+      // transition for the success message
       setTimeout(() => {
         this.showSuccess = false;
       }, 3000);
 
+      // redirection to product list 
       setTimeout(() => {
         this.$router.push('/');
       }, 6000);

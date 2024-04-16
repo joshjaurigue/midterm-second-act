@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import ProductList from '../views/ProductView.vue'
 
-
+// for specific routes
 const routes = [
   {
     path: '/',
@@ -11,10 +11,7 @@ const routes = [
   {
     path: '/add-products',
     name: 'add-products',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AddProductView.vue')
+    component: () => import('../views/AddProductView.vue')
   },
   {
     path: '/edit-product/:index',
