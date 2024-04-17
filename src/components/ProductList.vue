@@ -1,31 +1,26 @@
 <template>
-  <div>
-    <!-- heading for the product list -->
+  <div class="product-list-container">
     <h1 class="product-heading">Product List</h1>
    
     <div class="table-container">
-      <!-- table for displaying products -->
       <table class="product-table">
         <thead>
           <tr>
-            <th>Product Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Actions</th>
+            <th class="table-header">Product Name</th>
+            <th class="table-header">Description</th>
+            <th class="table-header">Price</th>
+            <th class="table-header">Actions</th>
           </tr>
         </thead>
         <tbody>
-          
           <transition-group name="fade">
-            <!-- loop for displaying all products -->
             <tr v-for="(product, index) in products" :key="product.id">
               <td>{{ product.name }}</td>
               <td>{{ product.description }}</td>
               <td>Php {{ product.price.toFixed(2) }}</td>
               <td>
-                <!-- edit and delete buttons per row -->
-                <button @click="editProduct(index)" class="btn-edit">Edit</button>
-                <button @click="deleteProduct(index)" class="btn-delete">Delete</button>
+                <button @click="editProduct(index)" class="btn btn-edit">Edit</button>
+                <button @click="deleteProduct(index)" class="btn btn-delete">Delete</button>
               </td>
             </tr>
           </transition-group>
@@ -33,19 +28,17 @@
       </table>
     </div>
 
-    <!-- display message when no products are listed -->
     <transition name="fade" appear>
       <div v-if="products.length === 0" class="no-products">
         No products existing yet!
       </div>
     </transition>
 
-    <!-- shows confirmation message when deleting a product -->
     <div v-if="showConfirmation" class="modal">
       <div class="modal-content">
         <p>Are you sure you want to delete this product?</p>
-        <button @click="cancelDelete" class="btn-cancel">Cancel</button>
-        <button @click="deleteConfirmed" class="btn-confirm">Delete</button>
+        <button @click="cancelDelete" class="btn btn-cancel">Cancel</button>
+        <button @click="deleteConfirmed" class="btn btn-confirm">Delete</button>
       </div>
     </div>
   </div>
@@ -55,35 +48,26 @@
 export default {
   data() {
     return {
-      // initializing products data as an array
       products: [],
       productToDeleteIndex: null,
       showConfirmation: false
     };
   },
   created() {
-    // fetching products from Vuex store when the component is created
     this.products = this.$store.state.products;
   },
   methods: {
-    
-    // for navigating to the edit page of the selected product
     editProduct(index) {
       this.$router.push(`/edit-product/${index}`);
     },
-    // for deleting a selected product
     deleteProduct(index) {
       this.productToDeleteIndex = index;
       this.showConfirmation = true;
     },
-    // for canceling the confirmation message for deleting
     cancelDelete() {
       this.showConfirmation = false;
     },
-
-    // for confirming the deletion
     deleteConfirmed() {
-      // deleteProduct mutation is called from store
       this.$store.commit('deleteProduct', this.productToDeleteIndex);
       this.showConfirmation = false;
     }
@@ -92,96 +76,124 @@ export default {
 </script>
 
 <style>
-/* Center the table */
+.product-list-container {
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.product-heading {
+  margin-bottom: 30px;
+  font-size: 50px;
+  color: #333;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 1px;
+  font-family: 'Poppins', sans-serif;
+}
+
 .table-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-x: auto;
 }
 
-/* Heading styles */
-.product-heading {
-  margin-bottom: 0;
-  padding-bottom: 30px;
-}
-
-/* Table styles */
 .product-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.product-table th, .product-table td {
-  padding: 12px 15px;
+.table-header {
+  padding: 18px 20px;
+  background-color: #048791;
+  color: #fff;
+  font-weight: 700;
   text-align: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  box-shadow: 0 4px 6px rgba(226, 7, 7, 0.1);
+  font-family: 'Poppins', sans-serif;
 }
 
-.product-table th {
-  background-color: #ebd8d8;
+.product-table td {
+  padding: 16px 20px;
+  text-align: center;
+  background-color: #d1cccc;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  font-family: 'Roboto', sans-serif;
 }
 
-/* Button styles */
-.btn-edit, .btn-delete, .btn-cancel, .btn-confirm {
-  padding: 10px 15px;
+.btn {
+  padding: 10px 22px;
   margin: 5px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 1px;
 }
 
 .btn-edit {
   background-color: #007bff;
-  color: #ffffff;
+  color: #fff;
 }
 
 .btn-delete {
   background-color: #dc3545;
-  color: #ffffff;
+  color: #fff;
 }
 
 .btn-cancel {
   background-color: #6c757d;
-  color: #ffffff;
+  color: #fff;
 }
 
 .btn-confirm {
   background-color: #28a745;
-  color: #ffffff;
+  color: #fff;
 }
 
-/* Modal styles */
+.no-products {
+  margin-top: 50px;
+  text-align: center;
+  font-style: italic;
+  color: #888;
+  font-size: 18px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+}
+
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 420px;
+  font-family: 'Roboto', sans-serif;
 }
 
-/* Transition styles */
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s;
 }
 
 .fade-enter, .fade-leave-to {
   opacity: 0;
-}
-
-/* Style for "No products existing yet" message */
-.no-products {
-  margin-top: 40px; /* Adjust this value to add spacing */
-  text-align: center;
-  font-style: italic;
-  color: #999;
 }
 </style>
