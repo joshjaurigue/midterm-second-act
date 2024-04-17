@@ -22,6 +22,11 @@
         <transition name="success-message" appear>
           <h3 v-if="showSuccess" class="text-success">The product was added successfully!</h3>
         </transition>
+        
+        <!-- error message for duplicate product -->
+        <transition name="error-message" appear>
+          <h3 v-if="errorMessage" class="text-danger">{{ errorMessage }}</h3>
+        </transition>
     </div>
 </template>
 
@@ -35,7 +40,8 @@
         description: '',
         price: null
       },
-      showSuccess: false
+      showSuccess: false,
+      errorMessage: '' // New data property for error message
     };
   },
   methods: {
@@ -48,6 +54,16 @@
         return;
       }
 
+      // Check for duplicate product name
+      const isDuplicate = this.$store.state.products.some(product => product.name.toLowerCase() === this.newProduct.name.toLowerCase());
+      if (isDuplicate) {
+        this.errorMessage = 'A product with the same name already exists.';
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 3000);
+        return;
+      }
+      
       // generates the next id for the next addition of product starting with 101
       const nextId = this.$store.state.products.length > 0 ? this.$store.state.products[this.$store.state.products.length - 1].id + 1 : 101;
 
@@ -121,6 +137,19 @@ button:hover {
   transition: opacity 0.5s;
 }
 .success-message-enter, .success-message-leave-to {
+  opacity: 0;
+}
+
+/* Add styles for error message */
+.text-danger {
+  color: #dc3545; /* Bootstrap's danger color */
+}
+
+.error-message-enter-active, .error-message-leave-active {
+  transition: opacity 0.5s;
+}
+
+.error-message-enter, .error-message-leave-to {
   opacity: 0;
 }
 </style>
