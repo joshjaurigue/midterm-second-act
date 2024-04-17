@@ -22,11 +22,17 @@
 
     <!-- shows success message -->
     <transition name="success-message" appear>
-      <h3 v-if="showSuccess" class="text-success mt-5">The product was edited successfully!</h3>
+      <h4 v-if="showSuccess" class="text-success mt-5">The product was edited successfully!</h4>
     </transition>
 
+    <!-- shows redirection message -->
+    <transition name="success-message" appear>
+      <h5 v-if="showSuccess" class="mt-5">You will now be redirected to the product list section...</h5>
+    </transition>
+
+    <!-- shows redirection message -->
     <transition name="error-message" appear>
-      <h3 v-if="showError" class="text-danger mt-5">Product name already exists. Cannot edit!</h3>
+      <h4 v-if="showError" class="text-danger mt-5">Product name already exists. Edit unsuccessful.</h4>
     </transition>
   </div>
 </template>

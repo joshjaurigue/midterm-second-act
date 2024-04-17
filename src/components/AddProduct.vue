@@ -5,27 +5,27 @@
         <form ref="form" @submit.prevent="addProduct">
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" id="name" v-model="newProduct.name" placeholder="Enter product name" required>
+            <input type="text" id="name" v-model="newProduct.name" placeholder="Enter product name">
         </div>
         <div class="form-group">
             <label for="description">Description:</label>
-            <textarea id="description" v-model="newProduct.description" placeholder="Enter product description" required></textarea>
+            <textarea id="description" v-model="newProduct.description" placeholder="Enter product description" ></textarea>
         </div>
         <div class="form-group">
             <label for="price">Price:</label>
-            <input type="number" id="price" v-model.number="newProduct.price" placeholder="Enter product price" required>
+            <input type="number" id="price" v-model.number="newProduct.price" placeholder="Enter product price">
         </div>
         <button type="submit">Add Product</button>
         </form>
 
         <!-- success message after adding -->
         <transition name="success-message" appear>
-          <h3 v-if="showSuccess" class="text-success">The product was added successfully!</h3>
+          <h4 v-if="showSuccess" class="text-success mt-5">The product was added successfully!</h4>
         </transition>
         
         <!-- error message for duplicate product -->
         <transition name="error-message" appear>
-          <h3 v-if="errorMessage" class="text-danger">{{ errorMessage }}</h3>
+          <h4 v-if="errorMessage" class="text-danger mt-5">{{ errorMessage }}</h4>
         </transition>
     </div>
 </template>
@@ -41,22 +41,35 @@
         price: null
       },
       showSuccess: false,
-      errorMessage: '' // New data property for error message
+      errorMessage: '', // New data property for error message
+      isEmpty: false
     };
   },
   methods: {
     // for adding the product
     addProduct() {
       
+      //resetting isEmpty condition
+      this.isEmpty = false;
+      
       // checks if fields are empty
       if (!this.newProduct.name || !this.newProduct.description || !this.newProduct.price) {
-        alert('Please fill in all fields.');
+        this.isEmpty = true;
+      }
+
+      if(this.isEmpty) {
+        // for displaying error message
+        this.errorMessage = 'Some/all required fields are empty. Please try again.';
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 3000);
         return;
       }
 
-      // Check for duplicate product name
+      // checks for duplicate product name
       const isDuplicate = this.$store.state.products.some(product => product.name.toLowerCase() === this.newProduct.name.toLowerCase());
       if (isDuplicate) {
+        // error message will be shown
         this.errorMessage = 'A product with the same name already exists.';
         setTimeout(() => {
           this.errorMessage = '';
