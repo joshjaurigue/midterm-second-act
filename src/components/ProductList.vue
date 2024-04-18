@@ -1,10 +1,14 @@
 <template>
   <div class="product-list-container">
+    <!-- Product List Heading -->
     <h1 class="product-heading">Product List</h1>
-   
+    
+    <!-- Table Container -->
     <div class="table-container">
+      <!-- Product Table -->
       <table class="product-table">
         <thead>
+          <!-- Table Headers -->
           <tr>
             <th class="table-header">Product Name</th>
             <th class="table-header">Description</th>
@@ -13,12 +17,14 @@
           </tr>
         </thead>
         <tbody>
+          <!-- Loop through products to display in table -->
           <transition-group name="fade">
             <tr v-for="(product, index) in products" :key="product.id">
               <td>{{ product.name }}</td>
               <td>{{ product.description }}</td>
               <td>Php {{ product.price.toFixed(2) }}</td>
               <td>
+                <!-- Edit and Delete buttons -->
                 <button @click="editProduct(index)" class="btn btn-edit">Edit</button>
                 <button @click="deleteProduct(index)" class="btn btn-delete">Delete</button>
               </td>
@@ -28,12 +34,14 @@
       </table>
     </div>
 
+    <!-- Display when there are no products -->
     <transition name="fade" appear>
       <div v-if="products.length === 0" class="no-products">
         No products existing yet!
       </div>
     </transition>
 
+    <!-- Delete Confirmation Modal -->
     <div v-if="showConfirmation" class="modal">
       <div class="modal-content">
         <p>Are you sure you want to delete this product?</p>
@@ -48,25 +56,31 @@
 export default {
   data() {
     return {
+      // Initialize data properties
       products: [],
       productToDeleteIndex: null,
       showConfirmation: false
     };
   },
   created() {
+    // Fetch products from store when component is created
     this.products = this.$store.state.products;
   },
   methods: {
+    // Redirect to edit page
     editProduct(index) {
       this.$router.push(`/edit-product/${index}`);
     },
+    // Show delete confirmation modal
     deleteProduct(index) {
       this.productToDeleteIndex = index;
       this.showConfirmation = true;
     },
+    // Cancel delete operation
     cancelDelete() {
       this.showConfirmation = false;
     },
+    // Confirm delete operation
     deleteConfirmed() {
       this.$store.commit('deleteProduct', this.productToDeleteIndex);
       this.showConfirmation = false;
@@ -76,6 +90,8 @@ export default {
 </script>
 
 <style>
+/* CSS styles for Product List component */
+
 .product-list-container {
   padding: 20px;
   font-family: 'Arial', sans-serif;
@@ -189,6 +205,7 @@ export default {
   font-family: 'Roboto', sans-serif;
 }
 
+/* CSS transition animations */
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s;
 }
