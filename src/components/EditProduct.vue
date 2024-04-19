@@ -67,7 +67,7 @@ export default {
   methods: {
     // submits the edited details
     submitForm() {
-      const isDuplicateName = this.$store.state.products.some((product, i) => i !== this.$route.params.index && product.name === this.product.name);
+      const isDuplicateName = this.$store.state.products.some((product) => product.id !== this.product.id && product.name === this.product.name);
 
       this.showError = isDuplicateName;
 
